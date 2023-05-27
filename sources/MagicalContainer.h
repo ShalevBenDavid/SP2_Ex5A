@@ -41,13 +41,13 @@ public:
 
         // Compare operators.
         // <<<<<<<<<<<<<<<<<< Operator == >>>>>>>>>>>>>>>>>>
-        bool operator == (const AscendingIterator& other) const;
+        bool operator == (const AscendingIterator&) const;
         // <<<<<<<<<<<<<<<<<< Operator != >>>>>>>>>>>>>>>>>>
-        bool operator != (const AscendingIterator& other) const;
+        bool operator != (const AscendingIterator&) const;
         // <<<<<<<<<<<<<<<<<< Operator > >>>>>>>>>>>>>>>>>>
-        bool operator > (const AscendingIterator& other) const;
+        bool operator > (const AscendingIterator&) const;
         // <<<<<<<<<<<<<<<<<< Operator < >>>>>>>>>>>>>>>>>>
-        bool operator < (const AscendingIterator& other) const;
+        bool operator < (const AscendingIterator&) const;
 
         // Begin and end operators.
         AscendingIterator begin ();
