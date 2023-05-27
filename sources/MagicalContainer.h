@@ -16,7 +16,7 @@ public:
     // Methods.
     void addElement (int);
     void removeElement (int);
-    size_t size (int) const;
+    size_t size () const;
 
     // --------------------------- Class: AscendingIterator ---------------------------
     class AscendingIterator {

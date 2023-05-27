@@ -3,11 +3,36 @@
 #include "MagicalContainer.h"
 
 // -------------------------------- Class: Magical contained --------------------------------
-void MagicalContainer :: addElement (int) { }
+/**
+ * Adds an element to the container.
+ * @param element - The element we add.
+ */
+void MagicalContainer :: addElement (int element) {
+    // Insert element to the container.
+    _container.push_back(element);
+}
 
-void MagicalContainer :: removeElement (int) { }
+/**
+ * Removed an element from the container.
+ * @param element - The element we remove.
+ */
+void MagicalContainer :: removeElement (int element) {
+    // Iterate over the container.
+    for (size_t i = 0; i < _container.size(); i++) {
+        // If we found element, remove and break.
+        if (_container.at(i) == element) {
+            _container.erase(_container.begin() + i);
+            break;
+        }
+    }
+}
 
-size_t MagicalContainer :: size (int) const { return _container.size(); }
+/**
+ * @return - The size of the container.
+ */
+size_t MagicalContainer :: size (int) const {
+    return _container.size();
+}
 
 // -------------------------------- Class: AscendingIterator --------------------------------
 // <<<<<<<<<<<<<<<<<< Operator = >>>>>>>>>>>>>>>>>>
