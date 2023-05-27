@@ -33,3 +33,6 @@
 .DS_Store
 sources/.gitkeep
 objects/.gitkeep
+.idea/vcs.xml
+.idea/misc.xml
+.idea/workspace.xml
