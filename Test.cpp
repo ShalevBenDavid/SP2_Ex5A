@@ -1,6 +1,6 @@
 // Created by Shalev Ben David.
 #include "doctest.h"
-#include "sources/MagicalContainer.h"
+#include "sources/MagicalContainer.hpp"
 
 TEST_CASE("Case 1: Adding Elements To The Container.") {
     MagicalContainer container;
