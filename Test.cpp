@@ -1,6 +1,7 @@
 // Created by Shalev Ben David.
 #include "doctest.h"
 #include "sources/MagicalContainer.hpp"
+using namespace ariel;
 
 TEST_CASE("Case 1: Adding Elements To The Container.") {
     MagicalContainer container;

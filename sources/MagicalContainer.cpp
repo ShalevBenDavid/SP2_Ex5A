@@ -2,6 +2,7 @@
 
 #include "MagicalContainer.hpp"
 #include <cmath>
+#include <stdexcept>
 using namespace std;
 using namespace ariel;
 
@@ -26,54 +27,56 @@ void MagicalContainer :: addElement (int element) {
  * @param element - The element we remove.
  */
 void MagicalContainer :: removeElement (int element) {
+    // Flag that tells if element was found in the container.
+    bool found = false;
     // If the number is prime, remove from the prime container.
     if (PrimeIterator :: isPrime(element)) {
         // Iterate over the prime container.
-        for (size_t i = 0; i < _prime_container.size(); i++) {
+        for (auto item = _prime_container.begin(); item != _prime_container.end(); ++item) {
             // If we found element, remove and break.
-            if (_prime_container.at(i) == element) {
-                _prime_container.erase(_prime_container.begin() + i);
+            if (*item == element) {
+                _prime_container.erase(item);
                 break;
             }
         }
     }
     // Iterate over the sorted container.
-    for (size_t i = 0; i < _sorted_container.size(); i++) {
+    for (auto item = _sorted_container.begin(); item != _sorted_container.end(); ++item) {
         // If we found element, remove and break.
-        if (_sorted_container.at(i) == element) {
-            _sorted_container.erase(_sorted_container.begin() + i);
+        if (*item == element) {
+            _sorted_container.erase(item);
+            found = true;
             break;
         }
     }
     // If element isn't in the container, throw.
-    throw invalid_argument("Element isn't in the container!\n");
+    if (!found) {
+        throw invalid_argument("Element isn't in the container!\n");
+    }
 }
 
 /**
  * @return - The size of the container.
  */
-size_t MagicalContainer :: size (int) const {
+size_t MagicalContainer :: size () const {
     return _sorted_container.size();
 }
 
 // -------------------------------- Class: AscendingIterator --------------------------------
 
 // Default constructor.
-MagicalContainer :: AscendingIterator :: AscendingIterator (MagicalContainer* container, size_t index = 0) {
+MagicalContainer :: AscendingIterator :: AscendingIterator (MagicalContainer& container, size_t index) : _container(container), _index(index) {
     // If index is out of the containers bound, throw.
-    if (index > _container -> _sorted_container.size()) {
+    if (index > container._sorted_container.size()) {
         throw invalid_argument("Invalid index.\n");
     }
-    // Initialize iterator.
-    _container = container;
-    _index = index;
 }
 
 // Copy constructor.
-MagicalContainer :: AscendingIterator :: AscendingIterator (const AscendingIterator& other) : _container (other._container), _index (other.index) {}
+MagicalContainer :: AscendingIterator :: AscendingIterator (const AscendingIterator& other) : _container (other._container), _index (other._index) {}
 
 // <<<<<<<<<<<<<<<<<< Operator = >>>>>>>>>>>>>>>>>>
-AscendingIterator& MagicalContainer :: AscendingIterator :: operator = (const AscendingIterator& other) {
+MagicalContainer :: AscendingIterator& MagicalContainer :: AscendingIterator :: operator = (const AscendingIterator& other) {
     if (this != &other) {
         _container = other._container;
         _index = other._index;
@@ -83,17 +86,17 @@ AscendingIterator& MagicalContainer :: AscendingIterator :: operator = (const As
 
 // <<<<<<<<<<<<<<<<<< Operator * >>>>>>>>>>>>>>>>>>
 int& MagicalContainer :: AscendingIterator :: operator * () {
-    return _container -> _sorted_container.at(_index);
+    return _container._sorted_container.at(_index);
 }
 
 // <<<<<<<<<<<<<<<<<< Prefix increment (++n) >>>>>>>>>>>>>>>>>>
-AscendingIterator& MagicalContainer :: AscendingIterator :: operator ++ () {
+MagicalContainer :: AscendingIterator& MagicalContainer :: AscendingIterator :: operator ++ () {
     // Performing ++ will exceed vector bounds.
-    if (_index == _container -> _sorted_container.size()) {
+    if (_index == _container._sorted_container.size()) {
         throw runtime_error ("Exceeding container's size.\n");
     }
     // Iterate over to the next index and return reference.
-    index++;
+    _index++;
     return *this;
 }
 
@@ -117,42 +120,28 @@ bool MagicalContainer :: AscendingIterator :: operator < (const AscendingIterato
 }
 
 // Begin and end operators.
-AscendingIterator MagicalContainer :: AscendingIterator :: begin () const {
+MagicalContainer :: AscendingIterator MagicalContainer :: AscendingIterator :: begin () const {
     // Return a AscendingIterator with index to the start.
-    return AscendingIterator(&this, 0);
+    return AscendingIterator(_container, 0);
 }
-AscendingIterator MagicalContainer :: AscendingIterator :: end () {
+MagicalContainer :: AscendingIterator MagicalContainer :: AscendingIterator :: end () const {
     // Return a AscendingIterator with index to the end.
-    return AscendingIterator (&this, _container -> _sorted_container.size());
+    return AscendingIterator (_container, _container._sorted_container.size());
 }
 
 // -------------------------------- Class: SideCrossIterator --------------------------------
-MagicalContainer :: SideCrossIterator :: SideCrossIterator (MagicalContainer* container, size_t index = 0) {
+MagicalContainer :: SideCrossIterator :: SideCrossIterator (MagicalContainer& container, size_t index) : _container(container), _index(index) {
     // If index is out of the containers bound, throw.
-    if (index > _container -> _sorted_container.size()) {
+    if (index > container._sorted_container.size()) {
         throw invalid_argument("Invalid index.\n");
     }
-    // Initialize iterator.
-    _container = container;
-    _index = index;
-}
-
-// Default constructor.
-MagicalContainer :: SideCrossIterator :: SideCrossIterator (MagicalContainer* container, size_t index = 0) {
-    // If index is negative or out of the containers bound, throw.
-    if (index < 0 || index > _container -> _sorted_container.size()) {
-        throw invalid_argument("Invalid index.\n");
-    }
-    // Initialize iterator.
-    _container = container;
-    _index = index;
 }
 
 // Copy constructor.
-MagicalContainer :: SideCrossIterator :: SideCrossIterator (const SideCrossIterator& other) : _container (other._container), _index (other.index) {}
+MagicalContainer :: SideCrossIterator :: SideCrossIterator (const SideCrossIterator& other) : _container (other._container), _index (other._index) {}
 
 // <<<<<<<<<<<<<<<<<< Operator = >>>>>>>>>>>>>>>>>>
-SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator = (const SideCrossIterator& other) {
+MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator = (const SideCrossIterator& other) {
     if (this != &other) {
         _container = other._container;
         _index = other._index;
@@ -164,22 +153,22 @@ SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator = (const Si
 int& MagicalContainer :: SideCrossIterator :: operator * () {
     // If the index is even, reduce index by half.
     if (!(_index % 2)) {
-        return _container -> _sorted_container.at(_index / 2);
+        return _container._sorted_container.at(_index / 2);
     }
     // If the index is odd, reduce by 1 and divide by half, and look from the end.
     else {
-        return _container -> _sorted_container.at((_container -> _sorted_container.size() - (_index - 1 ) / 2));
+        return _container._sorted_container.at((_container._sorted_container.size() - (_index - 1 ) / 2));
     }
 }
 
 // <<<<<<<<<<<<<<<<<< Prefix increment (++n) >>>>>>>>>>>>>>>>>>
-SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator ++ () {
+MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator ++ () {
     // Performing ++ will exceed vector bounds.
-    if (_index == _container -> _sorted_container.size()) {
+    if (_index == _container._sorted_container.size()) {
         throw runtime_error ("Exceeding container's size.\n");
     }
     // Iterate over to the next index and return reference.
-    index++;
+    _index++;
     return *this;
 }
 
@@ -203,30 +192,27 @@ bool MagicalContainer :: SideCrossIterator :: operator < (const SideCrossIterato
 }
 
 // Begin and end operators.
-SideCrossIterator MagicalContainer :: SideCrossIterator :: begin () const {
+MagicalContainer :: SideCrossIterator MagicalContainer :: SideCrossIterator :: begin () const {
     // Return a SideCrossIterator with index to the start.
-    return SideCrossIterator (&this, 0);
+    return SideCrossIterator (_container, 0);
 }
-SideCrossIterator MagicalContainer :: SideCrossIterator :: end () const {
+MagicalContainer :: SideCrossIterator MagicalContainer :: SideCrossIterator :: end () const {
     // Return a SideCrossIterator with index to the end.
-    return SideCrossIterator (&this, _container -> _sorted_container.size());
+    return SideCrossIterator (_container, _container._sorted_container.size());
 }
 
 // -------------------------------- Class: PrimeIterator --------------------------------
 
 // Default constructor.
-MagicalContainer :: PrimeIterator :: PrimeIterator (MagicalContainer* container, size_t index = 0) {
+MagicalContainer :: PrimeIterator :: PrimeIterator (MagicalContainer& container, size_t index) : _container(container), _index(index) {
     // If index is out of the containers bound, throw.
-    if (index > _container -> _prime_container.size()) {
+    if (index > container._prime_container.size()) {
         throw invalid_argument("Invalid index.\n");
     }
-    // Initialize iterator.
-    _container = container;
-    _index = index;
 }
 
 // Copy constructor.
-MagicalContainer :: PrimeIterator :: PrimeIterator (const PrimeIterator& other) : _container (other._container), _index (other.index) {}
+MagicalContainer :: PrimeIterator :: PrimeIterator (const PrimeIterator& other) : _container (other._container), _index (other._index) {}
 
 /**
  * Check if a num is prime.
@@ -242,7 +228,7 @@ bool MagicalContainer :: PrimeIterator :: isPrime (int num) {
 }
 
 // <<<<<<<<<<<<<<<<<< Operator = >>>>>>>>>>>>>>>>>>
-PrimeIterator& MagicalContainer :: PrimeIterator :: operator = (const PrimeIterator& other) {
+MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator = (const PrimeIterator& other) {
     if (this != &other) {
         _container = other._container;
         _index = other._index;
@@ -252,17 +238,17 @@ PrimeIterator& MagicalContainer :: PrimeIterator :: operator = (const PrimeItera
 
 // <<<<<<<<<<<<<<<<<< Operator * >>>>>>>>>>>>>>>>>>
 int& MagicalContainer :: PrimeIterator :: operator * () {
-    return _container -> _prime_container.at(_index);
+    return _container._prime_container.at(_index);
 }
 
 // <<<<<<<<<<<<<<<<<< Prefix increment (++n) >>>>>>>>>>>>>>>>>>
-PrimeIterator& MagicalContainer :: PrimeIterator :: operator ++ () {
+MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator ++ () {
     // Performing ++ will exceed vector bounds.
-    if (_index == _container -> _prime_container.size()) {
+    if (_index == _container._prime_container.size()) {
         throw runtime_error ("Exceeding container's size.\n");
     }
     // Iterate over to the next index and return reference.
-    index++;
+    _index++;
     return *this;
 }
 
@@ -270,7 +256,7 @@ PrimeIterator& MagicalContainer :: PrimeIterator :: operator ++ () {
 // <<<<<<<<<<<<<<<<<< Operator == >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: PrimeIterator :: operator == (const PrimeIterator& other) const {
     // Two iterators are equal if their iterators and i
-    return ((&_container == &other._container) && (_index == other._index);
+    return ((&_container == &other._container) && (_index == other._index));
 }
 // <<<<<<<<<<<<<<<<<< Operator != >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: PrimeIterator :: operator != (const PrimeIterator& other) const {
@@ -286,11 +272,11 @@ bool MagicalContainer :: PrimeIterator :: operator < (const PrimeIterator& other
 }
 
 // Begin and end operators.
-PrimeIterator MagicalContainer :: PrimeIterator :: begin () const {
+MagicalContainer :: PrimeIterator MagicalContainer :: PrimeIterator :: begin () const {
     // Return a PrimeIterator with index to the start.
-    return PrimeIterator (&this, 0);
+    return PrimeIterator (_container, 0);
 }
-PrimeIterator MagicalContainer :: PrimeIterator :: end () const {
+MagicalContainer :: PrimeIterator MagicalContainer :: PrimeIterator :: end () const {
     // Return a PrimeIterator with index to the end.
-    return PrimeIterator (&this, _container -> _prime_container.size());
+    return PrimeIterator (_container, _container._prime_container.size());
 }
