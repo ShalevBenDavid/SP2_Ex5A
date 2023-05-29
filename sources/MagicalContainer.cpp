@@ -2,6 +2,7 @@
 
 #include "MagicalContainer.hpp"
 #include <cmath>
+#include <iostream>
 #include <stdexcept>
 using namespace std;
 using namespace ariel;
@@ -157,7 +158,7 @@ int& MagicalContainer :: SideCrossIterator :: operator * () {
     }
     // If the index is odd, reduce by 1 and divide by half, and look from the end.
     else {
-        return _container._sorted_container.at((_container._sorted_container.size() - (_index - 1 ) / 2));
+        return _container._sorted_container.at((_container._sorted_container.size() - 1 - (_index - 1 ) / 2));
     }
 }
 
