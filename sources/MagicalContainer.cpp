@@ -13,13 +13,21 @@ using namespace ariel;
  * @param element - The element we add.
  */
 void MagicalContainer :: addElement (int element) {
-    // Insert element to the container.
+    // Insert element to the end of the container.
     _sorted_container.push_back(element);
-    // Sort elements in ascending order.
-    sort(_sorted_container.begin(), _sorted_container.end());
-    // If the number is prime, add to the prime container.
-    if (PrimeIterator :: isPrime(element)) {
-        _prime_container.push_back(element);
+    // Sort item into place in O(n).
+    for (unsigned long i = _sorted_container.size() - 1; i > 0; i--) {
+        // Swap items until we get it in his place.
+        if (_sorted_container.at(i) < _sorted_container.at(i - 1)) {
+            swap(_sorted_container.at(i), _sorted_container.at(i - 1));
+        }
+    }
+    // Update the prime container in O(n).
+    _prime_container.clear();
+    for (unsigned long i = 0; i < _sorted_container.size(); i++) {
+        if (PrimeIterator :: isPrime(_sorted_container.at(i))) {
+            _prime_container.push_back(&_sorted_container.at(i));
+        }
     }
 }
 
@@ -35,7 +43,7 @@ void MagicalContainer :: removeElement (int element) {
         // Iterate over the prime container.
         for (auto item = _prime_container.begin(); item != _prime_container.end(); ++item) {
             // If we found element, remove and break.
-            if (*item == element) {
+            if (**item == element) {
                 _prime_container.erase(item);
                 break;
             }
@@ -215,19 +223,6 @@ MagicalContainer :: PrimeIterator :: PrimeIterator (MagicalContainer& container,
 // Copy constructor.
 MagicalContainer :: PrimeIterator :: PrimeIterator (const PrimeIterator& other) : _container (other._container), _index (other._index) {}
 
-/**
- * Check if a num is prime.
- * @param num - The num we check if is prime.
- * @return - True if num is prime, and false otherwise.
- */
-bool MagicalContainer :: PrimeIterator :: isPrime (int num) {
-    if (num < 2) { return false; }
-    for (int i = 2; i <= sqrt(num); i++) {
-        if (!(num % i)) { return false; }
-    }
-    return true;
-}
-
 // <<<<<<<<<<<<<<<<<< Operator = >>>>>>>>>>>>>>>>>>
 MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator = (const PrimeIterator& other) {
     if (this != &other) {
@@ -239,7 +234,7 @@ MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator
 
 // <<<<<<<<<<<<<<<<<< Operator * >>>>>>>>>>>>>>>>>>
 int& MagicalContainer :: PrimeIterator :: operator * () {
-    return _container._prime_container.at(_index);
+    return *_container._prime_container.at(_index);
 }
 
 // <<<<<<<<<<<<<<<<<< Prefix increment (++n) >>>>>>>>>>>>>>>>>>
@@ -280,4 +275,18 @@ MagicalContainer :: PrimeIterator MagicalContainer :: PrimeIterator :: begin () 
 MagicalContainer :: PrimeIterator MagicalContainer :: PrimeIterator :: end () const {
     // Return a PrimeIterator with index to the end.
     return PrimeIterator (_container, _container._prime_container.size());
+}
+
+/**
+ * Check if a num is prime.
+ * @param num - The num we check if is prime.
+ * @return - True if num is prime, and false otherwise.
+ */
+bool MagicalContainer :: PrimeIterator :: isPrime (int num) {
+    if (num < 2) { return false; }
+    if (!(num % 2) && (num != 2)) { return false; }
+    for (int i = 3; i <= sqrt(num); i += 2) {
+        if (!(num % i)) { return false; }
+    }
+    return true;
 }

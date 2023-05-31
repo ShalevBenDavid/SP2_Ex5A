@@ -7,7 +7,7 @@ namespace ariel {
         class MagicalContainer {
             // Private attributes.
             std :: vector <int> _sorted_container;
-            std :: vector <int> _prime_container;
+            std :: vector <int*> _prime_container;
 
         public:
             // Constructors.
