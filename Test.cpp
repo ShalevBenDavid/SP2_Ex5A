@@ -511,3 +511,29 @@ TEST_CASE("Case 10: begin() And end() Checks") {
         CHECK_LT(primeIter.begin(), primeIter.end());
     }
 }
+
+TEST_CASE("Case 11: Check Operator = ") {
+    MagicalContainer container;
+    MagicalContainer :: AscendingIterator ascIter1(container);
+
+    container.addElement(2);
+    container.addElement(3);
+
+    ++ascIter1;
+    CHECK_EQ(*ascIter1, 3);
+    MagicalContainer :: AscendingIterator ascIter2 = ascIter1;
+    CHECK_EQ(*ascIter2, 3);
+}
+
+TEST_CASE("Case 12: Copy constructor") {
+    MagicalContainer container;
+    MagicalContainer :: AscendingIterator ascIter1(container);
+
+    container.addElement(2);
+    container.addElement(3);
+
+    ++ascIter1;
+    CHECK_EQ(*ascIter1, 3);
+    MagicalContainer :: AscendingIterator ascIter2(ascIter1);
+    CHECK_EQ(*ascIter2, 3);
+}
