@@ -21,7 +21,6 @@ namespace ariel {
         // --------------------------- Class: AscendingIterator ---------------------------
         class AscendingIterator {
         private:
-            // Private attributes.
             MagicalContainer& _container;
             size_t _index;
 
@@ -37,7 +36,7 @@ namespace ariel {
             AscendingIterator& operator = (const AscendingIterator&);
 
             // <<<<<<<<<<<<<<<<<< Operator * >>>>>>>>>>>>>>>>>>
-            int &operator * ();
+            int& operator * ();
 
             // <<<<<<<<<<<<<<<<<< Prefix increment (++n) >>>>>>>>>>>>>>>>>>
             AscendingIterator& operator ++ ();

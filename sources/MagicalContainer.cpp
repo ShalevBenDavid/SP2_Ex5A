@@ -106,7 +106,7 @@ MagicalContainer :: AscendingIterator& MagicalContainer :: AscendingIterator :: 
         throw runtime_error ("Exceeding container's size.\n");
     }
     // Performing ++ will exceed iterator bounds.
-    if (this == end()) {
+    if (*this == end()) {
         throw runtime_error ("Exceeding Iterators bounds.\n");
     }
     // Iterate over to the next index and return reference.
@@ -117,7 +117,7 @@ MagicalContainer :: AscendingIterator& MagicalContainer :: AscendingIterator :: 
 // Compare operators.
 // <<<<<<<<<<<<<<<<<< Operator == >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: AscendingIterator :: operator == (const AscendingIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     // Two iterators are equal if their iterators and i
@@ -129,14 +129,14 @@ bool MagicalContainer :: AscendingIterator :: operator != (const AscendingIterat
 }
 // <<<<<<<<<<<<<<<<<< Operator > >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: AscendingIterator :: operator > (const AscendingIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     return (_index > other._index);
 }
 // <<<<<<<<<<<<<<<<<< Operator < >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: AscendingIterator :: operator < (const AscendingIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     return (_index < other._index);
@@ -193,7 +193,7 @@ MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: 
         throw runtime_error ("Exceeding container's size.\n");
     }
     // Performing ++ will exceed iterator bounds.
-    if (this == end()) {
+    if (*this == end()) {
         throw runtime_error ("Exceeding Iterators bounds.\n");
     }
     // Iterate over to the next index and return reference.
@@ -204,7 +204,7 @@ MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: 
 // Compare operators.
 // <<<<<<<<<<<<<<<<<< Operator == >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: SideCrossIterator :: operator == (const SideCrossIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     // Two iterators are equal if their iterators and i
@@ -216,14 +216,14 @@ bool MagicalContainer :: SideCrossIterator :: operator != (const SideCrossIterat
 }
 // <<<<<<<<<<<<<<<<<< Operator > >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: SideCrossIterator :: operator > (const SideCrossIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     return (_index > other._index);
 }
 // <<<<<<<<<<<<<<<<<< Operator < >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: SideCrossIterator :: operator < (const SideCrossIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     return (_index < other._index);
@@ -273,7 +273,7 @@ MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator
         throw runtime_error ("Exceeding container's size.\n");
     }
     // Performing ++ will exceed iterator bounds.
-    if (this == end()) {
+    if (*this == end()) {
         throw runtime_error ("Exceeding Iterators bounds.\n");
     }
     // Iterate over to the next index and return reference.
@@ -284,7 +284,7 @@ MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator
 // Compare operators.
 // <<<<<<<<<<<<<<<<<< Operator == >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: PrimeIterator :: operator == (const PrimeIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     // Two iterators are equal if their iterators and i
@@ -296,14 +296,14 @@ bool MagicalContainer :: PrimeIterator :: operator != (const PrimeIterator& othe
 }
 // <<<<<<<<<<<<<<<<<< Operator > >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: PrimeIterator :: operator > (const PrimeIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     return (_index > other._index);
 }
 // <<<<<<<<<<<<<<<<<< Operator < >>>>>>>>>>>>>>>>>>
 bool MagicalContainer :: PrimeIterator :: operator < (const PrimeIterator& other) const {
-    if (_container != other._container) {
+    if (&_container != &other._container) {
         throw runtime_error("Comparing iterators from different containers.");
     }
     return (_index < other._index);
